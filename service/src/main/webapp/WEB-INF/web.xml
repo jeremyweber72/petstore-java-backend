@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee"
+         version="2.5">
+
+    <!-- Spring context -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:application-context.xml</param-value>
+    </context-param>
+
+
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>mongo</param-value> <!-- Change this value to use another persistence provider, such as Solr4 -->
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- Jersey with Spring -->
+    <filter>
+        <filter-name>Jersey with Spring</filter-name>
+        <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Jersey with Spring</filter-name>
+        <init-param>
+                <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+                <param-value>true</param-value>
+        </init-param>
+
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+</web-app>

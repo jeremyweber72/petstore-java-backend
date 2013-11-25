@@ -1,0 +1,49 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+  <!-- THIS IS USED IN CONCORDION TESTS BUT HAS TO BE IN THIS DIRECTORY
+       DUE TO CLASSPATH ISSUES! -->
+
+  <!-- Host and port MUST match the values from PetDaoMongoImplTest.MONGO_PORT -->
+  <mongo:mongo id="mongo" host="${mongo.host}" port="${mongo.port}">
+    <mongo:options write-number="1" />
+  </mongo:mongo>
+
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg index="0" ref="mongo" />
+    <constructor-arg index="1" value="${mongo.database}" />
+  </bean>
+
+  <bean id="mongoDao" class="es.zaldo.petstore.core.dao.mongo.PetDaoMongoImpl">
+    <constructor-arg index="0" ref="mongoTemplate" />
+  </bean>
+
+  <bean id="DatasetUtils" class="es.zaldo.petstore.service.integrationtest.DatasetUtils">
+    <constructor-arg index="0" value="${mongo.host}" />
+    <constructor-arg index="1" value="${mongo.port}" />
+    <constructor-arg index="2" value="${mongo.database}" />
+  </bean>
+
+
+  <!-- Configuration -->
+
+  <bean id="configuration"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="properties" ref="propertyLoaders" />
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+  </bean>
+
+  <bean id="propertyLoaders"
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="locations">
+      <list>
+        <value>classpath:/pet-service-integration-test.properties</value> <!-- Look for the integration tests config file -->
+      </list>
+    </property>
+  </bean>
+</beans>

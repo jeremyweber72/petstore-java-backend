@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+  <!-- Host and port MUST match the values from PetDaoMongoImplTest.MONGO_PORT -->
+  <mongo:mongo id="mongo" host="localhost" port="27777">
+    <mongo:options write-number="1" />
+  </mongo:mongo>
+
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg index="0" ref="mongo" />
+    <constructor-arg index="1" value="testdb" />
+  </bean>
+
+  <bean id="mongoDao" class="es.zaldo.petstore.core.dao.mongo.PetDaoMongoImpl">
+    <constructor-arg index="0" ref="mongoTemplate" />
+  </bean>
+</beans>

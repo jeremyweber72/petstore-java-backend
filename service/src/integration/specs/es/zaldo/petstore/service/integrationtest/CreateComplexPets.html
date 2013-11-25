@@ -1,0 +1,39 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+      xmlns:ext="urn:concordion-extensions:2010">
+<body>
+
+  <h1>Create complex pets</h1>
+
+  <p>Given a pet with nested objects, the structure of the pet shall be
+  maintained when the pet is retrieved.</p>
+
+  <div class="example">
+
+    <h3>Example</h3>
+
+    <p>Given a pet ID <b concordion:set="#id">pet_ID</b>, when the pet
+    <pre class="pet" concordion:set="#pet">
+{
+  "id" : "pet_ID",
+  "name" : "Toby",
+  "owner" : "Me!",
+  "group" : "Dogo",
+  "type" : "Dog",
+  "coords" : {
+    "latitude" : 30,
+    "longitude" : 0,
+  },
+  "info": {
+    "height": 60,
+    "color": "Black"
+  }
+}
+  </pre> is <b concordion:assertEquals="createPet(#pet)">created</b>, the nested
+  object
+  <pre concordion:assertEquals="loadById(#id)">{height=60, color=Black}</pre>
+  shall be returned when the pet is retrieved.</p>
+
+  </div>
+
+</body>
+</html>

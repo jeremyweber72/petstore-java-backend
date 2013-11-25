@@ -1,0 +1,41 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<body>
+
+  <h1>Status page</h1>
+
+  <p>
+    When the status URL is loaded, a JSON object is returned with some
+    information.
+  </p>
+
+  <div class="example">
+
+    <h3>Example</h3>
+
+    <p>
+      <b concordion:set="#status">status</b> information shall be
+      <b concordion:assertEquals="getStatusInfo(#status)">ok</b>.
+    </p>
+
+    <p>
+      <b concordion:set="#name">name</b> information shall be
+      <b concordion:assertEquals="getStatusInfo(#name)">${project.name}</b>.
+    </p>
+
+    <p>
+      <b concordion:set="#version">version</b> information shall be
+      <b concordion:assertEquals="getStatusInfo(#version)">${project.version}</b>.
+    </p>
+
+    <p>
+      <b concordion:set="#groupId">groupId</b> information shall be
+      <b concordion:assertEquals="getStatusInfo(#groupId)">${project.groupId}</b>.
+    </p>
+
+    <p>
+      <b concordion:set="#artifactId">artifactId</b> information shall be
+      <b concordion:assertEquals="getStatusInfo(#artifactId)">${project.artifactId}</b>.
+    </p>
+  </div>
+</body>
+</html>

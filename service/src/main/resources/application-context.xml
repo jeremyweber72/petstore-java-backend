@@ -1,0 +1,168 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+    <bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+        <property name="targetMethod" value="initLogging" />
+        <property name="arguments">
+            <list>
+                <value>${log4j.path}</value>
+            </list>
+        </property>
+    </bean>
+
+
+  <bean id="petsResource" class="es.zaldo.petstore.service.PetsResource">
+    <constructor-arg index="0">
+      <ref bean="petManager" />
+    </constructor-arg>
+    <constructor-arg index="1">
+      <ref bean="marshalHandler" />
+    </constructor-arg>
+    <constructor-arg index="2">
+      <ref bean="locationValidator" />
+    </constructor-arg>
+    <constructor-arg index="3">
+      <ref bean="boxValidator" />
+    </constructor-arg>
+    <constructor-arg index="4">
+      <ref bean="pageRequestValidator" />
+    </constructor-arg>
+    <constructor-arg index="5">
+      <ref bean="radiusValidator" />
+    </constructor-arg>
+    <constructor-arg index="6">
+      <ref bean="performanceMonitor" />
+    </constructor-arg>
+  </bean>
+
+  <bean id="statsResource" class="es.zaldo.petstore.service.StatsResource">
+    <constructor-arg index="0">
+      <ref bean="performanceMonitor" />
+    </constructor-arg>
+  </bean>
+
+  <bean id="petUtils" class="es.zaldo.petstore.core.utils.PetUtils">
+    <constructor-arg index="0" value="${service.url}"/>
+    <constructor-arg index="1" value="${limit.max-latitude}"/>
+    <constructor-arg index="2" value="${limit.min-latitude}"/>
+    <constructor-arg index="3" value="${limit.max-longitude}"/>
+    <constructor-arg index="4" value="${limit.min-longitude}"/>
+  </bean>
+
+  <bean id="locationValidator" class="es.zaldo.petstore.service.validation.LocationValidator" />
+
+  <bean id="boxValidator" class="es.zaldo.petstore.service.validation.BoxValidator">
+    <constructor-arg index="0" ref="locationValidator" />
+  </bean>
+
+  <bean id="radiusValidator" class="es.zaldo.petstore.service.validation.RadiusValidator">
+    <constructor-arg index="0" value="${limit.max-radius}" />
+  </bean>
+
+  <bean id="pageRequestValidator" class="es.zaldo.petstore.service.validation.PageRequestValidator">
+    <constructor-arg index="0" value="${limit.max-page}"/>
+    <constructor-arg index="1" value="${limit.max-size}"/>
+  </bean>
+
+  <bean id="petManager" class="es.zaldo.petstore.core.PetManagerImpl">
+    <constructor-arg index="0" ref="${persistenceProviderDao}" />
+  </bean>
+
+  <bean id="performanceMonitor" class="es.zaldo.petstore.core.utils.JamonPerformanceMonitor">
+    <constructor-arg index="0" value="${measurement.useJamon}" />
+    <constructor-arg index="1" value="${measurement.writeLogfile}" />
+  </bean>
+
+  <bean id="marshalHandler" class="es.zaldo.petstore.service.MarshalHandler">
+    <constructor-arg index="0">
+      <ref bean="petUtils" />
+    </constructor-arg>
+  </bean>
+
+  <!-- Configuration -->
+
+  <bean id="properties"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!-- <property name="properties" ref="propertyLoaders" />-->
+    <property name="properties" ref="SettingProperties" />
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+  </bean>
+
+ <bean id="SettingProperties"
+
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:pet-service.properties</value>
+                <value>${pet-service.config}</value>
+                <value>file://${YELL_HOME}/petsservice/pet-service.properties</value>
+                <bean id="configurationFile" class="org.springframework.jndi.JndiObjectFactoryBean"> <!-- If not found, look for a JNDI evn entry (defined in Tomcat context file) -->
+                    <property name="jndiName">
+                     <value>java:comp/env/pet-service/config-file</value>
+                    </property>
+                    <property name="defaultObject" value="" />
+                </bean>
+            </list>
+        </property>
+
+        <property name="properties">
+            <props>
+                <prop key="log4j.path">classpath:/log4j.properties</prop>
+                <prop key="pet-service.config">classpath:/pet-service.properties</prop>
+                <prop key="YELL_HOME">/etc/default</prop>
+            </props>
+        </property>
+    </bean>
+
+
+  <!-- Persistence provider switches -->
+
+  <!-- TODO Set the current profile as a Tomcat context parameter: http://tomcat.apache.org/tomcat-7.0-doc/config/context.html -->
+
+  <beans profile="mongo">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="properties">
+        <util:properties>
+          <prop key="persistenceProviderDao">retryOnNetworkExceptionmongoDao</prop>
+        </util:properties>
+      </property>
+    </bean>
+
+    <import resource="mongo-repository-context.xml" />
+  </beans>
+
+  <beans profile="solr">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="properties">
+        <util:properties>
+          <prop key="persistenceProviderDao">solrDao</prop>
+        </util:properties>
+      </property>
+    </bean>
+
+    <import resource="solr-repository-context.xml" />
+  </beans>
+
+  <beans profile="mixed">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="properties">
+        <util:properties>
+          <prop key="persistenceProviderDao">mixedDao</prop>
+        </util:properties>
+      </property>
+    </bean>
+
+    <import resource="mixed-repository-context.xml" />
+    <import resource="mongo-repository-context.xml" />
+    <import resource="solr-repository-context.xml" />
+  </beans>
+</beans>

@@ -1,0 +1,30 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+      xmlns:ext="urn:concordion-extensions:2010">
+<body>
+
+  <h1>Search Whitin</h1>
+
+  <p>
+    if user searchs all the pets within a given box the system shall
+    only return the pets that are in the box.
+  </p>
+
+  <div class="example">
+
+    <h3>Example</h3>
+
+    <p>Given the <span concordion:execute="setUpDatabase()">dataset</span> below
+    and given a box defined by the north-west location
+    (<span concordion:set="#nw">15, 0</span>)
+    and south-east location (<span concordion:set="#se">10, 2</span>),
+    pets returned should be
+    <span concordion:assertEquals="searchWithin(#nw, #se)">[0, 1, 2]</span></p>
+
+  </div>
+
+  <h2>Dataset</h2>
+
+  <span ext:embed="printDataset()" />
+
+</body>
+</html>

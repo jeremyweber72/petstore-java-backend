@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>pet Service Monitor Page</title>
+    <script language="javascript" type="text/javascript" src="./js/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="./js/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="./js/jquery.flot.time.js"></script>
+    <script type="text/javascript">
+
+        var nearPlotData = [];
+        var proximityPlotData = [];
+        var withinPlotData = [];
+        var i = 0;
+
+        setInterval(update, 1000);
+
+        function update() {
+            $.ajax({
+                type: 'get',
+                dataType: 'html',
+                url: "/petsservice/api/v1/stats?monitor=Near_Core&monitor=Proximity_Core&monitor=Within_Core",
+                success: function(data) {
+                    var millis = new Date().getTime();
+                    i++;
+
+                    var dataAsObject = JSON.parse(data);
+
+                    addData(nearPlotData, millis, dataAsObject.monitorData[0]);
+                    addData(proximityPlotData, millis, dataAsObject.monitorData[1]);
+                    addData(withinPlotData, millis, dataAsObject.monitorData[2]);
+
+                    $.plot("#coreCallsplaceholder", [{
+                        data: nearPlotData,
+                        label: "near"
+                    }, {
+                        data: proximityPlotData,
+                        label: "proximity"
+                    }, {
+                        data: withinPlotData,
+                        label: "within"
+                    }], {
+                        series: {
+                            lines: { show: true },
+                            petnts: { show: true }
+                        },
+                        xaxis: {
+                            mode: "time",
+                            show: true
+                        }
+                    });
+                }, error: function(e){
+                    alert('Error while retrieving stats:' + e.status);
+                }
+            });
+        }
+
+        function addData(plotData, millis, data) {
+            plotData.push([ millis, data.average ]);
+            if (plotData.length > 20) {
+                plotData.shift();
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Pet Service Monitor Page</h1>
+
+    <h2>Calls to core</h2>
+    <div class="demo-container">
+        <div id="coreCallsplaceholder" style="width: 90%; height:300px"></div>
+    </div>
+</body>
+</html>

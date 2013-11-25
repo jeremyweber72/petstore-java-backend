@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="@tomcat.path@/webapps/petsservice/">
+  <Environment name="pet-service/config-file"
+      type="java.lang.String"
+      value="file://@properties.dir@/petsservice/pet-service.properties" />
+  <Parameter name="spring.profiles.active" value="@repository-type@" override="false" />
+</Context>

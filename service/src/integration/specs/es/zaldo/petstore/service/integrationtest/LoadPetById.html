@@ -1,0 +1,23 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<body>
+
+  <h1>Load pet by ID</h1>
+
+  <p>Given a pet ID <b concordion:set="#id">pet_ID</b>,
+  when a pet <pre class="pet" concordion:set="#pet">
+{
+  "id" : "pet_ID",
+  "name" : "Toby",
+  "owner" : "Me!",
+  "group" : "Dogo",
+  "type" : "Dog",
+  "coords" : {
+    "latitude" : 30,
+    "longitude" : 0
+  }
+}
+  </pre> is <b concordion:assertEquals="createPet(#pet)">created</b> using that ID,
+  it can be loaded by just using <b concordion:assertEquals="loadById(#id)">pet_ID</b></p>
+
+</body>
+</html>
