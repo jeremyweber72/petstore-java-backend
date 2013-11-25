@@ -1,4 +1,4 @@
-= PETSTORE JAVA BACKEND PROJECT =
+# PetStore Java Rest Backend
 
 This PetStore project shows how to do a simple REST Java backend service.
 
@@ -28,28 +28,34 @@ The technology stack used is:
 * Byteman (Inject code in tests)
 * Concordion (Behavior driven integration tests)
 
-= LAUNCH INTEGRATION TESTS =
+## LAUNCH INTEGRATION TESTS
 
 Just execute the "install" goal. 
 
+```
 $> mvn clean install
+```
 
 Flapdoodle plugin should download an install an embed MongoDB. Then, Maven
 Tomcat plugin will deploy the project and launch Concordion test. If every
 goes well, test result will be available in _service/target/condorion_ folder.
 
-= LAUNCH EMBEDDED TOMCAT =
+## LAUNCH EMBEDDED TOMCAT
 
 To run the project in an embedded Tomcat, just execute:
 
+```
 $> cd . ; mvn clean package && cd service && mvn \
 -Dpet-service.config=file://`pwd`/src/test/resources/pet-service.properties tomcat7:run ; cd -
+```
 
 Service should be available at the following URL:
 
+```
 http://localhost:8080/service/
+```
 
-= TODOS =
+## TODOS
 
-* Add more unit tests
+* Add more unit tests!
 * Refactor Masharllers
