@@ -49,13 +49,14 @@ public class PetsResource {
 
     private static final Logger LOGGER = Logger.getLogger(PetsResource.class.getName());
 
-    private PetManager manager;
-    private MarshalHandler marshallHandler;
-    private BoxValidator boxValidator;
-    private RadiusValidator radiusValidator;
-    private LocationValidator locationValidator;
-    private PageRequestValidator pageRequestValidator;
-    private PerformanceMonitor monitor;
+    private final PetManager manager;
+    private final MarshalHandler marshallHandler;
+    private final PetMarshaller petMarshaller;
+    private final BoxValidator boxValidator;
+    private final RadiusValidator radiusValidator;
+    private final LocationValidator locationValidator;
+    private final PageRequestValidator pageRequestValidator;
+    private final PerformanceMonitor monitor;
 
     /**
      * Constructor of the class.
@@ -63,11 +64,13 @@ public class PetsResource {
      * @param manager Manager to use to access the model
      */
     public PetsResource(PetManager manager, MarshalHandler marshalHandler,
+        PetMarshaller petMarshaller,
         LocationValidator locationValidator, BoxValidator boxValidator,
         PageRequestValidator pageRequestValidator, RadiusValidator radiusValidator,
             PerformanceMonitor monitor) {
         this.manager = manager;
         this.marshallHandler = marshalHandler;
+        this.petMarshaller = petMarshaller;
         this.boxValidator = boxValidator;
         this.radiusValidator = radiusValidator;
         this.locationValidator = locationValidator;
@@ -99,7 +102,7 @@ public class PetsResource {
             monitor.stop(AvailableMonitors.Load_Pet_Core);
 
             monitor.start(AvailableMonitors.Marshal_Pet);
-            JSONObject json= marshallHandler.marshal(pet);
+            JSONObject json = petMarshaller.marshall(pet);
             monitor.stop(AvailableMonitors.Marshal_Pet);
 
             ResponseBuilder builder = Response.status(Status.OK).entity(json);
@@ -146,7 +149,7 @@ public class PetsResource {
             monitor.stop(AvailableMonitors.Update_Pet_Core);
 
             monitor.start(AvailableMonitors.Marshal_Pet);
-            JSONObject json= marshallHandler.marshal(newPet);
+            JSONObject json = petMarshaller.marshall(newPet);
             monitor.stop(AvailableMonitors.Marshal_Pet);
 
             ResponseBuilder builder = Response.status(Status.OK).entity(json);

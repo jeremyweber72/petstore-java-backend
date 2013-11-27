@@ -26,18 +26,21 @@
       <ref bean="marshalHandler" />
     </constructor-arg>
     <constructor-arg index="2">
-      <ref bean="locationValidator" />
+      <ref bean="petMarshaller" />
     </constructor-arg>
     <constructor-arg index="3">
-      <ref bean="boxValidator" />
+      <ref bean="locationValidator" />
     </constructor-arg>
     <constructor-arg index="4">
-      <ref bean="pageRequestValidator" />
+      <ref bean="boxValidator" />
     </constructor-arg>
     <constructor-arg index="5">
-      <ref bean="radiusValidator" />
+      <ref bean="pageRequestValidator" />
     </constructor-arg>
     <constructor-arg index="6">
+      <ref bean="radiusValidator" />
+    </constructor-arg>
+    <constructor-arg index="7">
       <ref bean="performanceMonitor" />
     </constructor-arg>
   </bean>
@@ -81,6 +84,12 @@
   </bean>
 
   <bean id="marshalHandler" class="es.zaldo.petstore.service.MarshalHandler">
+    <constructor-arg index="0">
+      <ref bean="petUtils" />
+    </constructor-arg>
+  </bean>
+  
+  <bean id="petMarshaller" class="es.zaldo.petstore.service.PetMarshaller">
     <constructor-arg index="0">
       <ref bean="petUtils" />
     </constructor-arg>
