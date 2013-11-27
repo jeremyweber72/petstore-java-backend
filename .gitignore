@@ -6,3 +6,5 @@ target/*
 bin/*
 **/target
 data
+**/bin
+**/*.log
