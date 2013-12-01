@@ -1,4 +1,4 @@
-package es.zaldo.petstore.service;
+package es.zaldo.petstore.service.marshalling;
 
 /**
  * Will be thrown whenever an error happens while marshalling objects.

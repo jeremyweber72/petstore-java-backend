@@ -1,6 +1,5 @@
 package es.zaldo.petstore.service.marshalling;
 
-import es.zaldo.petstore.service.MarshallerException;
 
 /**
  * Define operations on how to serialize and deserialize objects.
