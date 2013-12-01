@@ -58,4 +58,5 @@ http://localhost:8080/service/
 ## TODOS
 
 * Add more unit tests!
+* Use Arquillian to make more integration tests
 * Refactor Masharllers
