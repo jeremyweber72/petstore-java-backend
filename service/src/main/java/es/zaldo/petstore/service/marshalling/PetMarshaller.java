@@ -14,59 +14,72 @@ import es.zaldo.petstore.core.utils.PetUtils;
  */
 public class PetMarshaller implements Marshaller<Pet, JSONObject> {
 
+    private static final String FIELD_LAST_UPDATE = "lastUpdate";
+    private static final String FIELD_COORDS = "coords";
+    private static final String FIELD_LONGITUDE = "longitude";
+    private static final String FIELD_LATITUDE = "latitude";
+    private static final String FIELD_TYPE = "type";
+    private static final String FIELD_GROUP = "group";
+    private static final String FIELD_OWNER = "owner";
+    private static final String FIELD_NAME = "name";
+    private static final String SEPARATOR = "/";
+    private static final String FIELD_URL = "url";
+    private static final String FIELD_ID = "id";
+
     private PetUtils petUtils;
 
     /**
      * Constructor of the class.
-     *
-     * @param petUtils Utility class
+     * 
+     * @param petUtils
+     *            Utility class
      */
-    public PetMarshaller(PetUtils petUtils)    {
-        this.petUtils= petUtils;
+    public PetMarshaller(PetUtils petUtils) {
+        this.petUtils = petUtils;
     }
 
     /**
      * {@inheritDoc}
      */
-	@SuppressWarnings("unchecked")
-	@Override
-	public JSONObject marshall(Pet dbPet) throws MarshallerException {
-        JSONObject json= new JSONObject();
+    @SuppressWarnings("unchecked")
+    @Override
+    public JSONObject marshall(Pet dbPet) throws MarshallerException {
+        JSONObject json = new JSONObject();
         try {
-            json.put("id", dbPet.getId().toString());
+            json.put(FIELD_ID, dbPet.getId().toString());
+
             // Adding the url attribute
-            json.put("url", petUtils.getUrlBase() + "/" + dbPet.getId());
+            json.put(FIELD_URL, petUtils.getUrlBase() + SEPARATOR + dbPet.getId());
 
-            json.put("name", dbPet.getName().toString());
-            json.put("owner", dbPet.getOwner().toString());
+            json.put(FIELD_NAME, dbPet.getName().toString());
+            json.put(FIELD_OWNER, dbPet.getOwner().toString());
             if (dbPet.getGroup() != null)
-                json.put("group", dbPet.getGroup().toString());
+                json.put(FIELD_GROUP, dbPet.getGroup().toString());
             if (dbPet.getType() != null)
-                json.put("type", dbPet.getType().toString());
+                json.put(FIELD_TYPE, dbPet.getType().toString());
 
-            JSONObject jsLocation= new JSONObject();
-            jsLocation.put("latitude", dbPet.getLocation().getLatitude());
-            jsLocation.put("longitude", dbPet.getLocation().getLongitude());
-            json.put("coords", jsLocation);
+            JSONObject jsLocation = new JSONObject();
+            jsLocation.put(FIELD_LATITUDE, dbPet.getLocation().getLatitude());
+            jsLocation.put(FIELD_LONGITUDE, dbPet.getLocation().getLongitude());
+            json.put(FIELD_COORDS, jsLocation);
 
-            if (dbPet.getLastUpdate() != null &&
-                    !dbPet.getLastUpdate().toString().trim().isEmpty())
-                json.put("lastUpdate", dbPet.getLastUpdate());
+            if (dbPet.getLastUpdate() != null && !dbPet.getLastUpdate().toString().trim().isEmpty())
+                json.put(FIELD_LAST_UPDATE, dbPet.getLastUpdate());
 
-            HashMap<String,Object> attr= dbPet.getAttributes();
+            HashMap<String, Object> attr = dbPet.getAttributes();
             Set<String> keySet = attr.keySet();
 
-            Iterator<String> itr= keySet.iterator();
-            while (itr.hasNext())    {
-                String key= itr.next();
+            Iterator<String> itr = keySet.iterator();
+            while (itr.hasNext()) {
+                String key = itr.next();
 
                 if (HashMap.class.isAssignableFrom(attr.get(key).getClass())) {
-                    HashMap<String, String> map= (HashMap<String, String>) attr.get(key);
+                    HashMap<String, String> map = (HashMap<String, String>) attr.get(key);
                     Set<String> hashKeys = map.keySet();
-                    Iterator<String> hashItr= hashKeys.iterator();
-                    JSONObject jsMap= new JSONObject();
-                    while (hashItr.hasNext())    {
-                        String mapElementKey= hashItr.next();
+                    Iterator<String> hashItr = hashKeys.iterator();
+                    JSONObject jsMap = new JSONObject();
+                    while (hashItr.hasNext()) {
+                        String mapElementKey = hashItr.next();
                         jsMap.put(mapElementKey, map.get(mapElementKey));
                     }
                     json.put(key, jsMap);
@@ -76,12 +89,13 @@ public class PetMarshaller implements Marshaller<Pet, JSONObject> {
 
             }
 
-        } catch (NullPointerException ex)            {
-            throw new RuntimeException("Unable read mandatory attributes: " + ex.getMessage(), ex.getCause());
-        } catch (Exception ex)    {
-            throw new RuntimeException("Server error: " + ex.getMessage(), ex.getCause());
+            return json;
+        } catch (NullPointerException ex) {
+            throw new MarshallerException("Unable read mandatory attributes: " + ex.getMessage(),
+                    ex.getCause());
+        } catch (Exception ex) {
+            throw new MarshallerException("Server error: " + ex.getMessage(), ex.getCause());
         }
-        return json;
-	}
+    }
 
 }
