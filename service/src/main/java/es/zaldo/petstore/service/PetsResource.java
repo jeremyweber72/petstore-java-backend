@@ -28,6 +28,7 @@ import es.zaldo.petstore.core.exceptions.PetsValidationException;
 import es.zaldo.petstore.core.utils.PerformanceMonitor;
 import es.zaldo.petstore.core.utils.PerformanceMonitor.AvailableMonitors;
 import es.zaldo.petstore.service.marshalling.PetMarshaller;
+import es.zaldo.petstore.service.marshalling.PetsMarshaller;
 import es.zaldo.petstore.service.validation.BoxValidator;
 import es.zaldo.petstore.service.validation.PageRequestValidator;
 
@@ -54,6 +55,7 @@ public class PetsResource {
     private final PetManager manager;
     private final MarshalHandler marshallHandler;
     private final PetMarshaller petMarshaller;
+    private final PetsMarshaller petsMarshaller;
     private final BoxValidator boxValidator;
     private final PageRequestValidator pageRequestValidator;
     private final PerformanceMonitor monitor;
@@ -65,11 +67,12 @@ public class PetsResource {
      *            Manager to use to access the model
      */
     public PetsResource(PetManager manager, MarshalHandler marshalHandler,
-            PetMarshaller petMarshaller, BoxValidator boxValidator,
+            PetMarshaller petMarshaller, PetsMarshaller petsMarshaller, BoxValidator boxValidator,
             PageRequestValidator pageRequestValidator, PerformanceMonitor monitor) {
         this.manager = manager;
         this.marshallHandler = marshalHandler;
         this.petMarshaller = petMarshaller;
+        this.petsMarshaller = petsMarshaller;
         this.boxValidator = boxValidator;
         this.pageRequestValidator = pageRequestValidator;
         this.monitor = monitor;
@@ -188,7 +191,7 @@ public class PetsResource {
             monitor.stop(AvailableMonitors.Get_Pets_Core);
 
             monitor.start(AvailableMonitors.Marshal_List);
-            JSONObject json = marshallHandler.marshal(result);
+            JSONObject json = petsMarshaller.marshall(result);
             monitor.stop(AvailableMonitors.Marshal_List);
 
             ResponseBuilder builder = Response.status(Status.OK).entity(json);
@@ -262,7 +265,7 @@ public class PetsResource {
             monitor.stop(AvailableMonitors.Within_Core);
 
             monitor.start(AvailableMonitors.Marshal_List);
-            JSONObject json = marshallHandler.marshal(result);
+            JSONObject json = petsMarshaller.marshall(result);
             monitor.stop(AvailableMonitors.Marshal_List);
 
             ResponseBuilder builder = Response.status(Status.OK).entity(json);

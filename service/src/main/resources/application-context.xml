@@ -29,12 +29,15 @@
       <ref bean="petMarshaller" />
     </constructor-arg>
     <constructor-arg index="3">
-      <ref bean="boxValidator" />
+      <ref bean="petsMarshaller" />
     </constructor-arg>
     <constructor-arg index="4">
-      <ref bean="pageRequestValidator" />
+      <ref bean="boxValidator" />
     </constructor-arg>
     <constructor-arg index="5">
+      <ref bean="pageRequestValidator" />
+    </constructor-arg>
+    <constructor-arg index="6">
       <ref bean="performanceMonitor" />
     </constructor-arg>
   </bean>
@@ -82,6 +85,12 @@
   <bean id="petMarshaller" class="es.zaldo.petstore.service.marshalling.PetMarshaller">
     <constructor-arg index="0">
       <ref bean="petUtils" />
+    </constructor-arg>
+  </bean>
+  
+  <bean id="petsMarshaller" class="es.zaldo.petstore.service.marshalling.PetsMarshaller">
+    <constructor-arg index="0">
+      <ref bean="petMarshaller" />
     </constructor-arg>
   </bean>
 
