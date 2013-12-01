@@ -1,6 +1,7 @@
 package es.zaldo.petstore.service.marshalling;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -10,24 +11,24 @@ import org.junit.Test;
 
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.Pets;
-import es.zaldo.petstore.core.utils.PetUtils;
 
 /**
- * Tests for {@link PetsMarshaller} class.
+ * Test definition for all the implementations of the Pets marshallers.
  */
-public class PetsMarshallerTest {
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public abstract class AbstractPetsMarshallerTest {
 
-    private PetUtils petUtils = new PetUtils(MarshallingDataGenerator.URL,
-            MarshallingDataGenerator.MAX_LATITUDE, MarshallingDataGenerator.MIN_LATITUDE,
-            MarshallingDataGenerator.MAX_LONGITUDE, MarshallingDataGenerator.MIN_LONGITUDE);
-    private PetMarshaller petMarshaller = new PetMarshaller(petUtils);
+    /**
+     * @return An instance of a marshaller to execute the tests.
+     */
+    protected abstract Marshaller getMarshallerClassToTest();
 
     /**
      * 
      */
     @Test
     public void testPetsMarshal() throws Exception {
-        PetsMarshaller sut = new PetsMarshaller(petMarshaller);
+        Marshaller sut = getMarshallerClassToTest();
 
         List<Pet> listPets = new ArrayList<Pet>();
 
@@ -45,13 +46,11 @@ public class PetsMarshallerTest {
                 MarshallingDataGenerator.NUMBER_OF_RESULTS,
                 MarshallingDataGenerator.TOTAL_NUMBER_OF_RESULTS);
 
-        JSONObject json = sut.marshall(pets);
+        JSONObject json = (JSONObject) sut.marshall(pets);
 
         JSONArray jsonPets = json.getJSONArray("pets");
         Assert.assertEquals(MarshallingDataGenerator.NAME,
                 ((JSONObject) jsonPets.get(0)).getString("name"));
-
-        // System.out.println(json.toString());
     }
 
     /**
@@ -59,7 +58,7 @@ public class PetsMarshallerTest {
      */
     @Test
     public void testPetsAttributesMarshal() throws Exception {
-        PetsMarshaller sut = new PetsMarshaller(petMarshaller);
+        Marshaller sut = getMarshallerClassToTest();
 
         List<Pet> listPets = new ArrayList<Pet>();
 
@@ -75,13 +74,40 @@ public class PetsMarshallerTest {
                 MarshallingDataGenerator.NUMBER_OF_RESULTS,
                 MarshallingDataGenerator.TOTAL_NUMBER_OF_RESULTS);
 
-        JSONObject json = sut.marshall(pets);
+        JSONObject json = (JSONObject) sut.marshall(pets);
 
         Assert.assertEquals(MarshallingDataGenerator.CURRENT_PAGE, json.getInt("currentPage"));
         Assert.assertEquals(MarshallingDataGenerator.NUMBER_OF_RESULTS,
                 json.getInt("numberOfResults"));
         Assert.assertEquals(MarshallingDataGenerator.TOTAL_NUMBER_OF_RESULTS,
                 json.getInt("totalNumberOfResults"));
+    }
+
+    /**
+     * Test to see if there is any different between serial and parallel
+     * marshalling.
+     * 
+     * TODO Move this to a performance test on its own.
+     */
+    @Test
+    public void testPetsMarshalALotOfPets() throws Exception {
+        Marshaller sut = getMarshallerClassToTest();
+
+        List<Pet> listPets = new ArrayList<Pet>();
+
+        for (int i = 0; i < 10000; i++) {
+            listPets.add(MarshallingDataGenerator.getPetWithMandatoryFields());
+        }
+
+        Pets pets = new Pets(listPets, MarshallingDataGenerator.CURRENT_PAGE,
+                MarshallingDataGenerator.NUMBER_OF_RESULTS,
+                MarshallingDataGenerator.TOTAL_NUMBER_OF_RESULTS);
+
+        long start = new Date().getTime();
+        sut.marshall(pets);
+        long end = new Date().getTime();
+
+        System.out.println("Execution time (ms): " + (end - start));
     }
 
 }

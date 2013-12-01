@@ -27,8 +27,8 @@ import es.zaldo.petstore.core.dao.NoSuchPetException;
 import es.zaldo.petstore.core.exceptions.PetsValidationException;
 import es.zaldo.petstore.core.utils.PerformanceMonitor;
 import es.zaldo.petstore.core.utils.PerformanceMonitor.AvailableMonitors;
+import es.zaldo.petstore.service.marshalling.Marshaller;
 import es.zaldo.petstore.service.marshalling.PetMarshaller;
-import es.zaldo.petstore.service.marshalling.PetsMarshaller;
 import es.zaldo.petstore.service.validation.BoxValidator;
 import es.zaldo.petstore.service.validation.PageRequestValidator;
 
@@ -55,7 +55,7 @@ public class PetsResource {
     private final PetManager manager;
     private final MarshalHandler marshallHandler;
     private final PetMarshaller petMarshaller;
-    private final PetsMarshaller petsMarshaller;
+    private final Marshaller<Pets, JSONObject> petsMarshaller;
     private final BoxValidator boxValidator;
     private final PageRequestValidator pageRequestValidator;
     private final PerformanceMonitor monitor;
@@ -67,8 +67,9 @@ public class PetsResource {
      *            Manager to use to access the model
      */
     public PetsResource(PetManager manager, MarshalHandler marshalHandler,
-            PetMarshaller petMarshaller, PetsMarshaller petsMarshaller, BoxValidator boxValidator,
-            PageRequestValidator pageRequestValidator, PerformanceMonitor monitor) {
+            PetMarshaller petMarshaller, Marshaller<Pets, JSONObject> petsMarshaller,
+            BoxValidator boxValidator, PageRequestValidator pageRequestValidator,
+            PerformanceMonitor monitor) {
         this.manager = manager;
         this.marshallHandler = marshalHandler;
         this.petMarshaller = petMarshaller;

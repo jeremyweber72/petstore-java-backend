@@ -1,33 +1,23 @@
 package es.zaldo.petstore.service.marshalling;
 
-import java.util.Iterator;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.Pets;
 
 /**
- * Knows how to marshall {@link Pets} into a JSON object.
+ * Contains all the common code to marshall {@link Pets}.
  */
-public class PetsMarshaller implements Marshaller<Pets, JSONObject> {
+public abstract class AbstractPetsMarshaller implements Marshaller<Pets, JSONObject> {
 
-    private static final String FIELD_PETS = "pets";
+    protected static final String FIELD_PETS = "pets";
+
     private static final String FIELD_TOTAL_NUMBER_OF_RESULTS = "totalNumberOfResults";
     private static final String FIELD_NUMBER_OF_RESULTS = "numberOfResults";
     private static final String FIELD_CURRENT_PAGE = "currentPage";
-
-    private final PetMarshaller petMarshaller;
-
-    /**
-     * Constructor of the class.
-     * 
-     * @param petMarshaller Class to marshall a single et
-     */
-    public PetsMarshaller(final PetMarshaller petMarshaller) {
-        this.petMarshaller = petMarshaller;
-    }
 
     /**
      * {@inheritDoc}
@@ -40,20 +30,26 @@ public class PetsMarshaller implements Marshaller<Pets, JSONObject> {
             json.put(FIELD_NUMBER_OF_RESULTS, pets.getNumberOfResults());
             json.put(FIELD_TOTAL_NUMBER_OF_RESULTS, pets.getTotalNumberOfResults());
 
-            List<Pet> listPets = pets.getPets();
-            Iterator<Pet> itr = listPets.iterator();
-
-            while (itr.hasNext()) {
-                json.accumulate(FIELD_PETS, petMarshaller.marshall(itr.next()));
-            }
-
-            return json;
+            return marshallPets(json, pets.getPets());
         } catch (NullPointerException ex) {
-            throw new RuntimeException("Unable read mandatory attributes: " + ex.getMessage(),
+            throw new MarshallerException("Unable read mandatory attributes: " + ex.getMessage(),
                     ex.getCause());
         } catch (Exception ex) {
-            throw new RuntimeException("Server error: " + ex.getMessage(), ex.getCause());
+            throw new MarshallerException("Server error: " + ex.getMessage(), ex.getCause());
         }
     }
+
+    /**
+     * Marshall a list of pets.
+     * 
+     * @param json JSON object with common data
+     * @param pets Pets to marshall
+     * 
+     * @return A JSON object containing the marshalled list of pets.
+     * 
+     * @throws MarshallerException If any error happens while marshalling
+     */
+    protected abstract JSONObject marshallPets(JSONObject json, List<Pet> pets)
+            throws JSONException, MarshallerException;
 
 }

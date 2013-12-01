@@ -29,7 +29,7 @@
       <ref bean="petMarshaller" />
     </constructor-arg>
     <constructor-arg index="3">
-      <ref bean="petsMarshaller" />
+      <ref bean="parallelPetsMarshaller" />
     </constructor-arg>
     <constructor-arg index="4">
       <ref bean="boxValidator" />
@@ -88,17 +88,21 @@
     </constructor-arg>
   </bean>
   
-  <bean id="petsMarshaller" class="es.zaldo.petstore.service.marshalling.PetsMarshaller">
+  <bean id="serialPetsMarshaller" class="es.zaldo.petstore.service.marshalling.SerialPetsMarshaller">
     <constructor-arg index="0">
       <ref bean="petMarshaller" />
     </constructor-arg>
+  </bean>
+  
+  <bean id="parallelPetsMarshaller" class="es.zaldo.petstore.service.marshalling.ParallelPetsMarshaller">
+    <constructor-arg index="0" ref="petMarshaller" />
+    <constructor-arg index="1" value="${parallel.pets.marshaller.number.threads}" />
   </bean>
 
   <!-- Configuration -->
 
   <bean id="properties"
     class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <!-- <property name="properties" ref="propertyLoaders" />-->
     <property name="properties" ref="SettingProperties" />
     <property name="ignoreUnresolvablePlaceholders" value="true" />
     <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
@@ -112,7 +116,6 @@
             <list>
                 <value>classpath:pet-service.properties</value>
                 <value>${pet-service.config}</value>
-                <value>file://${YELL_HOME}/petsservice/pet-service.properties</value>
                 <bean id="configurationFile" class="org.springframework.jndi.JndiObjectFactoryBean"> <!-- If not found, look for a JNDI evn entry (defined in Tomcat context file) -->
                     <property name="jndiName">
                      <value>java:comp/env/pet-service/config-file</value>
@@ -126,7 +129,6 @@
             <props>
                 <prop key="log4j.path">classpath:/log4j.properties</prop>
                 <prop key="pet-service.config">classpath:/pet-service.properties</prop>
-                <prop key="YELL_HOME">/etc/default</prop>
             </props>
         </property>
     </bean>
