@@ -27,6 +27,7 @@ import es.zaldo.petstore.core.dao.NoSuchPetException;
 import es.zaldo.petstore.core.exceptions.PetsValidationException;
 import es.zaldo.petstore.core.utils.PerformanceMonitor;
 import es.zaldo.petstore.core.utils.PerformanceMonitor.AvailableMonitors;
+import es.zaldo.petstore.service.marshalling.PetMarshaller;
 import es.zaldo.petstore.service.validation.BoxValidator;
 import es.zaldo.petstore.service.validation.PageRequestValidator;
 

@@ -1,4 +1,4 @@
-package es.zaldo.petstore.service;
+package es.zaldo.petstore.service.marshalling;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +8,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.utils.PetUtils;
+import es.zaldo.petstore.service.MarshallerException;
 
 /**
  * Marshalls a pet into a JSON object.

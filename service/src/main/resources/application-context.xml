@@ -79,7 +79,7 @@
     </constructor-arg>
   </bean>
   
-  <bean id="petMarshaller" class="es.zaldo.petstore.service.PetMarshaller">
+  <bean id="petMarshaller" class="es.zaldo.petstore.service.marshalling.PetMarshaller">
     <constructor-arg index="0">
       <ref bean="petUtils" />
     </constructor-arg>
