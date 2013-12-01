@@ -29,18 +29,12 @@
       <ref bean="petMarshaller" />
     </constructor-arg>
     <constructor-arg index="3">
-      <ref bean="locationValidator" />
-    </constructor-arg>
-    <constructor-arg index="4">
       <ref bean="boxValidator" />
     </constructor-arg>
-    <constructor-arg index="5">
+    <constructor-arg index="4">
       <ref bean="pageRequestValidator" />
     </constructor-arg>
-    <constructor-arg index="6">
-      <ref bean="radiusValidator" />
-    </constructor-arg>
-    <constructor-arg index="7">
+    <constructor-arg index="5">
       <ref bean="performanceMonitor" />
     </constructor-arg>
   </bean>
@@ -63,10 +57,6 @@
 
   <bean id="boxValidator" class="es.zaldo.petstore.service.validation.BoxValidator">
     <constructor-arg index="0" ref="locationValidator" />
-  </bean>
-
-  <bean id="radiusValidator" class="es.zaldo.petstore.service.validation.RadiusValidator">
-    <constructor-arg index="0" value="${limit.max-radius}" />
   </bean>
 
   <bean id="pageRequestValidator" class="es.zaldo.petstore.service.validation.PageRequestValidator">
