@@ -22,8 +22,6 @@ public class MarshalHandlerTest {
 
     private static final String ID = "id";
 
-    private static final String URL = "http://localhost:8080/service/api/v1/pets/pet";
-
     private static final String OWNER = "name";
 
     private static final String NAME = "owner";
@@ -75,7 +73,7 @@ public class MarshalHandlerTest {
 
     @BeforeClass
     public static void initializeObjects() {
-        petUtils = new PetUtils(URL, MAX_LATITUDE, MIN_LATITUDE, MAX_LONGITUDE, MIN_LONGITUDE);
+        petUtils = new PetUtils(MAX_LATITUDE, MIN_LATITUDE, MAX_LONGITUDE, MIN_LONGITUDE);
         marshalUnderTest = new MarshalHandler(petUtils);
     }
 

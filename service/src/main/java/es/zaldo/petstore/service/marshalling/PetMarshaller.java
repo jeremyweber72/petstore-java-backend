@@ -7,7 +7,6 @@ import java.util.Set;
 import org.codehaus.jettison.json.JSONObject;
 
 import es.zaldo.petstore.core.Pet;
-import es.zaldo.petstore.core.utils.PetUtils;
 
 /**
  * Marshalls a pet into a JSON object.
@@ -26,7 +25,7 @@ public class PetMarshaller implements Marshaller<Pet, JSONObject> {
     private static final String FIELD_URL = "url";
     private static final String FIELD_ID = "id";
 
-    private PetUtils petUtils;
+    private final String urlBase;
 
     /**
      * Constructor of the class.
@@ -34,8 +33,8 @@ public class PetMarshaller implements Marshaller<Pet, JSONObject> {
      * @param petUtils
      *            Utility class
      */
-    public PetMarshaller(PetUtils petUtils) {
-        this.petUtils = petUtils;
+    public PetMarshaller(final String urlBase) {
+        this.urlBase = urlBase;
     }
 
     /**
@@ -49,7 +48,7 @@ public class PetMarshaller implements Marshaller<Pet, JSONObject> {
             json.put(FIELD_ID, dbPet.getId().toString());
 
             // Adding the url attribute
-            json.put(FIELD_URL, petUtils.getUrlBase() + SEPARATOR + dbPet.getId());
+            json.put(FIELD_URL, urlBase + SEPARATOR + dbPet.getId());
 
             json.put(FIELD_NAME, dbPet.getName().toString());
             json.put(FIELD_OWNER, dbPet.getOwner().toString());

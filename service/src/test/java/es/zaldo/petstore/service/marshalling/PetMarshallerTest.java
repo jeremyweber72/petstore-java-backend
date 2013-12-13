@@ -7,29 +7,24 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.zaldo.petstore.core.Pet;
-import es.zaldo.petstore.core.utils.PetUtils;
 
 /**
  * Tests for {@link PetMarshaller} class.
  */
 public class PetMarshallerTest {
 
-    private PetUtils petUtils = new PetUtils(MarshallingDataGenerator.URL,
-            MarshallingDataGenerator.MAX_LATITUDE, MarshallingDataGenerator.MIN_LATITUDE,
-            MarshallingDataGenerator.MAX_LONGITUDE, MarshallingDataGenerator.MIN_LONGITUDE);
-
     /**
      * 
      */
     @Test
     public void testMarshal() throws Exception {
-        PetMarshaller sut = new PetMarshaller(petUtils);
+        PetMarshaller sut = new PetMarshaller(MarshallingDataGenerator.URL);
 
         Pet pet = MarshallingDataGenerator.getPetWithMandatoryFields();
         JSONObject json = sut.marshall(pet);
 
         Assert.assertEquals(MarshallingDataGenerator.ID, json.getString("id"));
-        Assert.assertEquals(petUtils.getUrlBase() + MarshallingDataGenerator.SEPARATOR
+        Assert.assertEquals(MarshallingDataGenerator.URL + MarshallingDataGenerator.SEPARATOR
                 + MarshallingDataGenerator.ID, json.getString("url"));
         Assert.assertEquals(MarshallingDataGenerator.OWNER, json.getString("owner"));
         Assert.assertEquals(MarshallingDataGenerator.NAME, json.getString("name"));
@@ -45,7 +40,7 @@ public class PetMarshallerTest {
      */
     @Test
     public void testMarshalWithAttributes() throws Exception {
-        PetMarshaller sut = new PetMarshaller(petUtils);
+        PetMarshaller sut = new PetMarshaller(MarshallingDataGenerator.URL);
 
         Pet pet = MarshallingDataGenerator.getPetWithMandatoryFields();
         HashMap<String, Object> mapAttr = new HashMap<String, Object>();

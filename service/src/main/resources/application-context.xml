@@ -49,11 +49,10 @@
   </bean>
 
   <bean id="petUtils" class="es.zaldo.petstore.core.utils.PetUtils">
-    <constructor-arg index="0" value="${service.url}"/>
-    <constructor-arg index="1" value="${limit.max-latitude}"/>
-    <constructor-arg index="2" value="${limit.min-latitude}"/>
-    <constructor-arg index="3" value="${limit.max-longitude}"/>
-    <constructor-arg index="4" value="${limit.min-longitude}"/>
+    <constructor-arg index="0" value="${limit.max-latitude}"/>
+    <constructor-arg index="1" value="${limit.min-latitude}"/>
+    <constructor-arg index="2" value="${limit.max-longitude}"/>
+    <constructor-arg index="3" value="${limit.min-longitude}"/>
   </bean>
 
   <bean id="locationValidator" class="es.zaldo.petstore.service.validation.LocationValidator" />
@@ -83,9 +82,7 @@
   </bean>
   
   <bean id="petMarshaller" class="es.zaldo.petstore.service.marshalling.PetMarshaller">
-    <constructor-arg index="0">
-      <ref bean="petUtils" />
-    </constructor-arg>
+    <constructor-arg index="0" value="${service.url}" />
   </bean>
   
   <bean id="serialPetsMarshaller" class="es.zaldo.petstore.service.marshalling.SerialPetsMarshaller">

@@ -1,21 +1,14 @@
 package es.zaldo.petstore.core.utils;
 
-
 public class PetUtils {
 
-    protected String urlBase;
-    protected double maxLatitude;
-    protected double minLatitude;
-    protected double maxLongitude;
-    protected double minLongitude;
+    private final double maxLatitude;
+    private final double minLatitude;
+    private final double maxLongitude;
+    private final double minLongitude;
 
-    public PetUtils(double maxLatitude, double minLatitude, double maxLongitude, double minLongitude) {
-        this("localhost:8080", maxLatitude, minLatitude, maxLongitude, minLongitude);
-    }
-
-    public PetUtils(String urlBase, double maxLatitude, double minLatitude, double maxLongitude,
-            double minLongitude) {
-        this.urlBase = urlBase;
+    public PetUtils(final double maxLatitude, final double minLatitude, final double maxLongitude,
+            final double minLongitude) {
         this.maxLatitude = maxLatitude;
         this.minLatitude = minLatitude;
         this.maxLongitude = maxLongitude;
@@ -27,10 +20,6 @@ public class PetUtils {
                 && longitude <= this.maxLongitude && longitude >= this.minLongitude)
             return true;
         return false;
-    }
-
-    public String getUrlBase() {
-        return this.urlBase;
     }
 
     /**
