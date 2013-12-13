@@ -1,6 +1,5 @@
 package es.zaldo.petstore.core.utils;
 
-import java.util.UUID;
 
 public class PetUtils {
 
@@ -21,12 +20,6 @@ public class PetUtils {
         this.minLatitude = minLatitude;
         this.maxLongitude = maxLongitude;
         this.minLongitude = minLongitude;
-    }
-
-    public static final UUID generateUUID() {
-        // generate random UUIDs
-        UUID uuid = UUID.randomUUID();
-        return uuid;
     }
 
     public boolean areCoordsInsideBoundaries(double latitude, double longitude) {
