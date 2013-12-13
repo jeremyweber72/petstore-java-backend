@@ -48,13 +48,6 @@
     </constructor-arg>
   </bean>
 
-  <bean id="petUtils" class="es.zaldo.petstore.core.utils.PetUtils">
-    <constructor-arg index="0" value="${limit.max-latitude}"/>
-    <constructor-arg index="1" value="${limit.min-latitude}"/>
-    <constructor-arg index="2" value="${limit.max-longitude}"/>
-    <constructor-arg index="3" value="${limit.min-longitude}"/>
-  </bean>
-
   <bean id="locationValidator" class="es.zaldo.petstore.service.validation.LocationValidator" />
 
   <bean id="boxValidator" class="es.zaldo.petstore.service.validation.BoxValidator">
@@ -75,11 +68,7 @@
     <constructor-arg index="1" value="${measurement.writeLogfile}" />
   </bean>
 
-  <bean id="marshalHandler" class="es.zaldo.petstore.service.MarshalHandler">
-    <constructor-arg index="0">
-      <ref bean="petUtils" />
-    </constructor-arg>
-  </bean>
+  <bean id="marshalHandler" class="es.zaldo.petstore.service.MarshalHandler" />
   
   <bean id="petMarshaller" class="es.zaldo.petstore.service.marshalling.PetMarshaller">
     <constructor-arg index="0" value="${service.url}" />
@@ -105,30 +94,29 @@
     <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
   </bean>
 
- <bean id="SettingProperties"
+  <bean id="SettingProperties"
+      class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="ignoreResourceNotFound" value="true" />
+      <property name="locations">
+        <list>
+          <value>classpath:pet-service.properties</value>
+          <value>${pet-service.config}</value>
+          <bean id="configurationFile" class="org.springframework.jndi.JndiObjectFactoryBean"> <!-- If not found, look for a JNDI evn entry (defined in Tomcat context file) -->
+            <property name="jndiName">
+              <value>java:comp/env/pet-service/config-file</value>
+            </property>
+            <property name="defaultObject" value="" />
+          </bean>
+        </list>
+      </property>
 
-        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="ignoreResourceNotFound" value="true" />
-        <property name="locations">
-            <list>
-                <value>classpath:pet-service.properties</value>
-                <value>${pet-service.config}</value>
-                <bean id="configurationFile" class="org.springframework.jndi.JndiObjectFactoryBean"> <!-- If not found, look for a JNDI evn entry (defined in Tomcat context file) -->
-                    <property name="jndiName">
-                     <value>java:comp/env/pet-service/config-file</value>
-                    </property>
-                    <property name="defaultObject" value="" />
-                </bean>
-            </list>
-        </property>
-
-        <property name="properties">
-            <props>
-                <prop key="log4j.path">classpath:/log4j.properties</prop>
-                <prop key="pet-service.config">classpath:/pet-service.properties</prop>
-            </props>
-        </property>
-    </bean>
+      <property name="properties">
+          <props>
+              <prop key="log4j.path">classpath:/log4j.properties</prop>
+              <prop key="pet-service.config">classpath:/pet-service.properties</prop>
+          </props>
+      </property>
+  </bean>
 
 
   <!-- Persistence provider switches -->

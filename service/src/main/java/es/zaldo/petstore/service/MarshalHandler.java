@@ -9,7 +9,6 @@ import org.codehaus.jettison.json.JSONObject;
 
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.exceptions.PetsValidationException;
-import es.zaldo.petstore.core.utils.PetUtils;
 
 /**
  * Class used to marshal and unmarshal the Pet Service entities
@@ -20,12 +19,6 @@ public class MarshalHandler {
 
     private static final String MSG_WRONG_JSON_ONJECT = "Wrong JSON object: ";
     private final String[] mainFields = { "id", "name", "owner", "coords", "group", "type" };
-
-    private PetUtils petUtils;
-
-    public MarshalHandler(PetUtils petUtils) {
-        this.petUtils = petUtils;
-    }
 
     /**
      * The method receive a JSONObject from pet service and return a pet object with the information obtained from Json
@@ -60,14 +53,6 @@ public class MarshalHandler {
             // Validate the latitude and longitude
             double latitude = coords.getDouble("latitude");
             double longitude = coords.getDouble("longitude");
-
-            if (!petUtils.areCoordsInsideBoundaries(latitude, longitude))
-                throw new PetsValidationException(
-                        MSG_WRONG_JSON_ONJECT
-                                + "Latitude and Longitude have to be inside the defined boundaries: latitude must be within [ "
-                                + petUtils.getMinLatitude() + ", " + petUtils.getMaxLatitude()
-                                + " ] and longitude must be within [ " + petUtils.getMinLongitude()
-                                + ", " + petUtils.getMaxLongitude() + " ].");
 
             pet.setLocation(latitude, longitude);
 

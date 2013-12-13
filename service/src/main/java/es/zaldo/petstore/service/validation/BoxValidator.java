@@ -21,10 +21,11 @@ public class BoxValidator implements Validator<Box> {
      */
     @Override
     public boolean isValid(Box validable) {
-        return locationValidator.isValid(validable.getUpperLeft()) &&
-            locationValidator.isValid(validable.getLowerRight()) &&
-            validable.getUpperLeft().getLatitude() > validable.getLowerRight().getLatitude() &&
-                validable.getUpperLeft().getLongitude() < validable.getLowerRight().getLongitude();
+        return locationValidator.isValid(validable.getUpperLeft())
+                && locationValidator.isValid(validable.getLowerRight())
+                && validable.getUpperLeft().getLatitude() > validable.getLowerRight().getLatitude()
+                && validable.getUpperLeft().getLongitude() < validable.getLowerRight()
+                        .getLongitude();
     }
 
 }

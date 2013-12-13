@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.exceptions.PetsValidationException;
-import es.zaldo.petstore.core.utils.PetUtils;
 
 /**
  * Tests for the {@link MarshalHandler} class.
@@ -58,23 +57,12 @@ public class MarshalHandlerTest {
 
     private static final String ADDITIONAL_NODE = "additionalNode";
 
-    private static final double MAX_LATITUDE = 44;
-
-    private static final double MIN_LATITUDE = 27;
-
-    private static final double MAX_LONGITUDE = 5;
-
-    private static final double MIN_LONGITUDE = -18.5;
-
     @Autowired
     private static MarshalHandler marshalUnderTest;
 
-    private static PetUtils petUtils;
-
     @BeforeClass
     public static void initializeObjects() {
-        petUtils = new PetUtils(MAX_LATITUDE, MIN_LATITUDE, MAX_LONGITUDE, MIN_LONGITUDE);
-        marshalUnderTest = new MarshalHandler(petUtils);
+        marshalUnderTest = new MarshalHandler();
     }
 
     @Test
@@ -171,13 +159,6 @@ public class MarshalHandlerTest {
     }
 
     @Test(expected = PetsValidationException.class)
-    public void testUnmarshalExceptionWithEmptyName() throws Exception {
-        JSONObject json = buildTestJSONObject(ID, EMPTY_STRING, OWNER, GROUP, TYPE, LATITUDE,
-                LONGITUDE);
-        marshalUnderTest.unmarshal(json);
-    }
-
-    @Test(expected = PetsValidationException.class)
     public void testUnmarshalExceptionWithoutOwner() throws Exception {
         JSONObject json = getJSONObjectWithMandatoryFields();
         json.remove("owner");
@@ -227,17 +208,6 @@ public class MarshalHandlerTest {
         JSONObject json = getJSONObjectWithMandatoryFields();
         JSONObject coords = json.getJSONObject("coords");
         coords.remove("latitude");
-        json.put("coords", coords);
-
-        marshalUnderTest.unmarshal(json);
-    }
-
-    @Test(expected = PetsValidationException.class)
-    public void testUnmarshalExceptionCoordsOutofBounds() throws Exception {
-        JSONObject json = getJSONObjectWithMandatoryFields();
-        JSONObject coords = json.getJSONObject("coords");
-        coords.put("latitude", 200);
-        coords.put("longitude", -200);
         json.put("coords", coords);
 
         marshalUnderTest.unmarshal(json);
