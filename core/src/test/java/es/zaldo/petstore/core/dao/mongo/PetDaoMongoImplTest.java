@@ -22,6 +22,7 @@ import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import es.zaldo.petstore.core.AbstractPetDaoTest;
+import es.zaldo.petstore.core.Location;
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.Pets;
 import es.zaldo.petstore.core.dao.NoSuchPetException;
@@ -80,8 +81,7 @@ public class PetDaoMongoImplTest extends AbstractPetDaoTest {
      */
     @Test
     public void testCreateComplexObjectAndLoad() throws Exception {
-        Pet petToCreate = new Pet(ID_1).setName(ID_1).setLocation(11d, 1d)
-                .setOwner("me").setGroup("group").setType("paid");
+        Pet petToCreate = new Pet(ID_1, ID_1, new Location(11d, 1d), "me", "group", "paid");
 
         HashMap<String, Object> nested = new HashMap<String, Object>();
         nested.put("fov", 12.23);

@@ -44,8 +44,7 @@ public abstract class AbstractPetDaoTest {
      */
     @Test
     public void testCreateAndLoad() throws Exception {
-        Pet petToCreate = new Pet(ID_1).setName(ID_1).setLocation(11d, 1d)
-                .setOwner("me").setGroup("group").setType("paid");
+        Pet petToCreate = new Pet(ID_1, ID_1, new Location(11d, 1d), "me", "group", "paid");
         getDaoUnderTest().upsert(petToCreate);
         Pet petLoaded = getDaoUnderTest().loadById(petToCreate.getId());
         Assert.assertEquals(petToCreate, petLoaded);
@@ -53,8 +52,7 @@ public abstract class AbstractPetDaoTest {
 
     @Test
     public void updatePet() throws Exception {
-        Pet pet = new Pet(ID_1, ID_1, new Location(10.5, 10.5))
-                .setGroup(GROUP_RESTAURANTS).setType(FREE_TYPE).setOwner(OWNER_1);
+        Pet pet = new Pet(ID_1, ID_1, new Location(10.5, 10.5), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet);
 
         Pet newPet = getDaoUnderTest().loadById(pet.getId());
@@ -123,17 +121,17 @@ public abstract class AbstractPetDaoTest {
     public void testSearchWithinByGroup() throws Exception {
 
         // Data setup
-        Pet pet1 = new Pet(ID_1, "1", new Location(11, 1), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet1 = new Pet(ID_1, "1", new Location(11, 1), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet1);
-        Pet pet2 = new Pet(ID_2, "2", new Location(12, 0.5), OWNER_2, GROUP_HOTELS).setType(FREE_TYPE);
+        Pet pet2 = new Pet(ID_2, "2", new Location(12, 0.5), OWNER_2, GROUP_HOTELS, FREE_TYPE);
         getDaoUnderTest().upsert(pet2);
-        Pet pet3 = new Pet(ID_3, "3", new Location(11, 0.2), OWNER_2, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet3 = new Pet(ID_3, "3", new Location(11, 0.2), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet3);
-        Pet pet4 = new Pet(ID_4, "4", new Location(10.5, 0.2), OWNER_1, GROUP_HOTELS).setType(FREE_TYPE);
+        Pet pet4 = new Pet(ID_4, "4", new Location(10.5, 0.2), OWNER_1, GROUP_HOTELS, FREE_TYPE);
         getDaoUnderTest().upsert(pet4);
-        Pet pet5 = new Pet(ID_5, "5", new Location(11, 0.8), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet5 = new Pet(ID_5, "5", new Location(11, 0.8), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet5);
-        Pet pet6 = new Pet(ID_6, "6", new Location(10.2, 0), OWNER_1, GROUP_HOTELS).setType(FREE_TYPE);
+        Pet pet6 = new Pet(ID_6, "6", new Location(10.2, 0), OWNER_1, GROUP_HOTELS, FREE_TYPE);
         getDaoUnderTest().upsert(pet6);
 
         // Execution
@@ -207,24 +205,23 @@ public abstract class AbstractPetDaoTest {
     public List<Pet> createTestPetsForProximity() throws Exception {
         proxPets = new ArrayList<Pet>(5);
 
-        Pet pet0 = new Pet(ID_3, "2", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS)
-                .setType(FREE_TYPE);
+        Pet pet0 = new Pet(ID_3, "2", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet0);
         proxPets.add(pet0);
 
-        Pet pet1 = new Pet(ID_1, "0", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet1 = new Pet(ID_1, "0", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         getDaoUnderTest().upsert(pet1);
         proxPets.add(pet1);
 
-        Pet pet2 = new Pet(ID_2, "1", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet2 = new Pet(ID_2, "1", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet2);
         proxPets.add(pet2);
 
-        Pet pet3 = new Pet(ID_4, "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet3 = new Pet(ID_4, "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         getDaoUnderTest().upsert(pet3);
         proxPets.add(pet3);
 
-        Pet pet4 = new Pet(ID_5, "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet4 = new Pet(ID_5, "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet4);
         proxPets.add(pet4);
 
@@ -234,27 +231,27 @@ public abstract class AbstractPetDaoTest {
     private void createTestPetsForWithin() {
         withinPets = new ArrayList<Pet>(5);
 
-        Pet pet1 = new Pet(ID_1, "1", new Location(13, 1), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet1 = new Pet(ID_1, "1", new Location(13, 1), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet1);
         withinPets.add(pet1);
 
-        Pet pet2 = new Pet(ID_2, "2", new Location(12, 0.5), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet2 = new Pet(ID_2, "2", new Location(12, 0.5), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         getDaoUnderTest().upsert(pet2);
         withinPets.add(pet2);
 
-        Pet pet3 = new Pet(ID_3, "3", new Location(11, 0.2), OWNER_1, GROUP_RESTAURANTS).setType(PAID_TYPE);
+        Pet pet3 = new Pet(ID_3, "3", new Location(11, 0.2), OWNER_1, GROUP_RESTAURANTS, PAID_TYPE);
         getDaoUnderTest().upsert(pet3);
         withinPets.add(pet3);
 
-        Pet pet4 = new Pet(ID_4, "4", new Location(9, 0.2), OWNER_1, GROUP_HOTELS).setType(FREE_TYPE);
+        Pet pet4 = new Pet(ID_4, "4", new Location(9, 0.2), OWNER_1, GROUP_HOTELS, FREE_TYPE);
         getDaoUnderTest().upsert(pet4);
         withinPets.add(pet4);
 
-        Pet pet5 = new Pet(ID_5, "5", new Location(11, 2.1), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet5 = new Pet(ID_5, "5", new Location(11, 2.1), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet5);
         withinPets.add(pet5);
 
-        Pet pet6 = new Pet(ID_6, "6", new Location(9, 2.1), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet6 = new Pet(ID_6, "6", new Location(9, 2.1), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         getDaoUnderTest().upsert(pet6);
         withinPets.add(pet6);
     }
@@ -264,22 +261,22 @@ public abstract class AbstractPetDaoTest {
      */
     protected List<Pet> createTestPets() throws Exception {
         testPets = new ArrayList<Pet>(5);
-        Pet pet0 = new Pet(ID_1, "0", new Location(13, 11), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet0 = new Pet(ID_1, "0", new Location(13, 11), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet0);
         testPets.add(pet0);
-        Pet pet1 = new Pet(ID_2, "1", new Location(12, 10.5), OWNER_2, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet1 = new Pet(ID_2, "1", new Location(12, 10.5), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         getDaoUnderTest().upsert(pet1);
         testPets.add(pet1);
-        Pet pet2 = new Pet(ID_3, "2", new Location(11, 10.2), OWNER_1, GROUP_HOTELS).setType(FREE_TYPE);
+        Pet pet2 = new Pet(ID_3, "2", new Location(11, 10.2), OWNER_1, GROUP_HOTELS, FREE_TYPE);
         getDaoUnderTest().upsert(pet2);
         testPets.add(pet2);
-        Pet pet3 = new Pet(ID_4, "3", new Location(9, 10.2), OWNER_2, GROUP_RESTAURANTS).setType(PAID_TYPE);
+        Pet pet3 = new Pet(ID_4, "3", new Location(9, 10.2), OWNER_2, GROUP_RESTAURANTS, PAID_TYPE);
         getDaoUnderTest().upsert(pet3);
         testPets.add(pet3);
-        Pet pet4 = new Pet(ID_5, "4", new Location(11, 12.1), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet4 = new Pet(ID_5, "4", new Location(11, 12.1), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         getDaoUnderTest().upsert(pet4);
         testPets.add(pet4);
-        Pet pet5 = new Pet(ID_6, "5", new Location(9, 12.1), OWNER_2, GROUP_RESTAURANTS).setType(PAID_TYPE);
+        Pet pet5 = new Pet(ID_6, "5", new Location(9, 12.1), OWNER_2, GROUP_RESTAURANTS, PAID_TYPE);
         getDaoUnderTest().upsert(pet5);
         testPets.add(pet5);
         return testPets;

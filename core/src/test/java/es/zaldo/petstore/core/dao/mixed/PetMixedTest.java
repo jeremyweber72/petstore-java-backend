@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.data.solr.core.geo.GeoLocation;
 
+import es.zaldo.petstore.core.Location;
 import es.zaldo.petstore.core.Pet;
 
 /**
@@ -26,12 +27,7 @@ public class PetMixedTest {
         PetMixed expectedPet = new PetMixed(
                 ID, new GeoLocation(LATITUDE, LONGITUDE), OWNER, GROUP, TYPE);
 
-        Pet pet = new Pet(ID)
-            .setName("1")
-            .setLocation(LATITUDE, LONGITUDE)
-            .setOwner(OWNER)
-            .setGroup(GROUP)
-                .setType(TYPE);
+        Pet pet = new Pet(ID, "1", new Location(LATITUDE, LONGITUDE), OWNER, GROUP, TYPE);
 
         Assert.assertEquals("PetMixed is different.",
                 expectedPet, PetMixed.parsePet(pet));

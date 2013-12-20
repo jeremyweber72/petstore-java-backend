@@ -25,6 +25,7 @@ import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import es.zaldo.petstore.core.Location;
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.dao.NoSuchPetException;
 import es.zaldo.petstore.core.dao.mongo.PetDaoMongoImpl;
@@ -119,8 +120,7 @@ public class PetDaoMixedImplTest {
             action = "throw new java.lang.RuntimeException();"
         )
     public void testCreateInMongoButErrorInSolr() throws Exception {
-        Pet petToCreate = new Pet().setName("1").setLocation(11d, 1d)
-                .setOwner("me").setGroup("group").setType("paid");
+        Pet petToCreate = new Pet("1", "1", new Location(11d, 1d), "me", "group", "paid");
         daoUnderTest.upsert(petToCreate);
         daoUnderTest.loadById(petToCreate.getId());
     }

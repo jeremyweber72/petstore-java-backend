@@ -2,6 +2,7 @@ package es.zaldo.petstore.service.marshalling;
 
 import java.util.HashMap;
 
+import es.zaldo.petstore.core.Location;
 import es.zaldo.petstore.core.Pet;
 
 /**
@@ -32,13 +33,8 @@ public abstract class MarshallingDataGenerator {
     public static final double MIN_LONGITUDE = -18.5;
 
     public static Pet getPetWithMandatoryFields() {
-        Pet pet = new Pet(ID);
-        pet.setOwner(OWNER);
-        pet.setName(NAME);
-        pet.setGroup(GROUP);
-        pet.setLocation(LATITUDE, LONGITUDE);
-        pet.setLastUpdate();
-        return pet;
+        return new Pet(ID, NAME, new Location(LATITUDE, LONGITUDE), 
+                OWNER, GROUP, "free");
     }
 
     public static HashMap<String, String> getAddressAttributes() {

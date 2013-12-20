@@ -52,24 +52,19 @@ public class CreateTestData {
         template.indexOps(Pet.class).ensureIndex(new GeospatialIndex("coords"));
 
         ArrayList<Pet> pets = new ArrayList<Pet>(5);
-        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS)
-                .setType(FREE_TYPE);
+        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet0);
         template.save(pet0);
-        Pet pet1 = new Pet("1", "1", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS)
-                .setType(PAID_TYPE);
+        Pet pet1 = new Pet("1", "1", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet1);
         template.save(pet1);
-        Pet pet2 = new Pet("2", "2", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS)
-                .setType(FREE_TYPE);
+        Pet pet2 = new Pet("2", "2", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet2);
         template.save(pet2);
-        Pet pet3 = new Pet("3", "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS)
-                .setType(PAID_TYPE);;
+        Pet pet3 = new Pet("3", "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet3);
         template.save(pet3);
-        Pet pet4 = new Pet("4", "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS)
-                .setType(PAID_TYPE);;
+        Pet pet4 = new Pet("4", "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS, PAID_TYPE);
         pets.add(pet4);
         template.save(pet4);
     }

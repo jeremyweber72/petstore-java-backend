@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import es.zaldo.petstore.core.Location;
 import es.zaldo.petstore.core.Pet;
 import es.zaldo.petstore.core.exceptions.PetsValidationException;
 
@@ -27,40 +28,36 @@ public class MarshalHandler {
      * @return Pet A Pet object
      */
     public Pet unmarshal(JSONObject jsonObject) throws PetsValidationException {
-        Pet pet = null;
-        JSONObject coords = null;
-
         try {
             // Setting the petId
-            if (jsonObject.isNull("id") || jsonObject.getString("id").trim().isEmpty()) {
-                pet = new Pet();
-            } else {
-                pet = new Pet(jsonObject.getString("id"));
+            String id = Pet.generateUUID();
+            if (!(jsonObject.isNull("id") || jsonObject.getString("id").trim().isEmpty())) {
+                id = jsonObject.getString("id");
             }
 
-            pet.setOwner(getMandatoryValueFromJson(jsonObject, "owner"));
-            pet.setName(getMandatoryValueFromJson(jsonObject, "name"));
-
-            pet.setType(getMandatoryValueFromJson(jsonObject, "type"));
-            pet.setGroup(getMandatoryValueFromJson(jsonObject, "group"));
-
-            coords = jsonObject.getJSONObject("coords");
+            JSONObject coords = jsonObject.getJSONObject("coords");
             if (coords.isNull("latitude") || coords.isNull("longitude")) {
                 throw new PetsValidationException(MSG_WRONG_JSON_ONJECT
                         + "Coords element with latitude and longitude is mandatory.");
             }
-
+            
             // Validate the latitude and longitude
             double latitude = coords.getDouble("latitude");
             double longitude = coords.getDouble("longitude");
 
-            pet.setLocation(latitude, longitude);
+            Location location = new Location(latitude, longitude);
+            
+            Pet pet = new Pet(id, getMandatoryValueFromJson(jsonObject, "name"),
+                location, getMandatoryValueFromJson(jsonObject, "owner"),
+                getMandatoryValueFromJson(jsonObject, "group"),
+                    getMandatoryValueFromJson(jsonObject, "type"));
 
-            // At this petnt the request is valid
+            // At this point the request is valid
             // Now its necessary to map the parameters to the Pet object
 
             pet.setAttributes(getAttributes(jsonObject, mainFields));
 
+            return pet;
         } catch (NullPointerException ex) {
             throw new RuntimeException("Unable read mandatory attributes: " + ex.getMessage(),
                     ex.getCause());
@@ -68,8 +65,6 @@ public class MarshalHandler {
             throw new PetsValidationException(MSG_WRONG_JSON_ONJECT
                     + "Name, Owner, Group, Type and Coords attributes are mandatory.");
         }
-
-        return pet;
     }
 
     /**

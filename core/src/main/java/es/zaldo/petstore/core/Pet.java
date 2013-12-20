@@ -86,32 +86,8 @@ public class Pet {
     /**
      * Needed by JAXB marshaller.
      */
-    public Pet() {
-        this.id = generateUUID();
-    }
-
-    /**
-     * Constructor of the class.
-     *
-     * @param id
-     */
-    public Pet(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Constructor of the class.
-     *
-     * @param owner
-     * @param countryCode
-     * @param latitude
-     * @param longitude
-     */
-    public Pet(String name, Location location) {
-        this.id = generateUUID();
-        this.name = name;
-        setLocation(location.getLatitude(), location.getLongitude());
-    }
+    @SuppressWarnings("unused")
+    private Pet() {}
 
     /**
      * Constructor of the class.
@@ -122,44 +98,14 @@ public class Pet {
      * @param latitude
      * @param longitude
      */
-    public Pet(String id, String name, Location location) {
-        this.id = id;
-        this.name = name;
-        setLocation(location.getLatitude(), location.getLongitude());
-    }
-
-    /**
-     * Constructor of the class.
-     *
-     * @param id
-     * @param owner
-     * @param countryCode
-     * @param latitude
-     * @param longitude
-     */
-    public Pet(String name, Location location, String owner, String group) {
-        this.id = generateUUID();
-        this.name = name;
-        this.owner = owner;
-        this.group = group;
-        setLocation(location.getLatitude(), location.getLongitude());
-    }
-
-    /**
-     * Constructor of the class.
-     *
-     * @param id
-     * @param owner
-     * @param countryCode
-     * @param latitude
-     * @param longitude
-     */
-    public Pet(String id, String name, Location location, String owner, String group) {
+    public Pet(String id, String name, Location location, String owner, 
+            String group, String type) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.group = group;
         setLocation(location.getLatitude(), location.getLongitude());
+        this.type = type;
     }
 
     /**
@@ -292,7 +238,7 @@ public class Pet {
     /**
      * @return A random UUID.
      */
-    private String generateUUID() {
+    public static String generateUUID() {
 
         // generate random UUIDs
         return UUID.randomUUID().toString();

@@ -68,15 +68,15 @@ public class DatasetUtils {
      */
     public static List<Pet> getProximityPets() {
         ArrayList<Pet> pets = new ArrayList<Pet>(5);
-        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet0);
-        Pet pet1 = new Pet("1", "1", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet1 = new Pet("1", "1", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet1);
-        Pet pet2 = new Pet("2", "2", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet2 = new Pet("2", "2", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet2);
-        Pet pet3 = new Pet("3", "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);;
+        Pet pet3 = new Pet("3", "3", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet3);
-        Pet pet4 = new Pet("4", "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS).setType(PAID_TYPE);;
+        Pet pet4 = new Pet("4", "4", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS, PAID_TYPE);
         pets.add(pet4);
         return pets;
     }
@@ -86,30 +86,30 @@ public class DatasetUtils {
      */
     public static List<Pet> getNearPets() {
         ArrayList<Pet> pets = new ArrayList<Pet>(5);
-        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet0 = new Pet("0", "0", new Location(10.5555, 10.5555), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet0);
-        Pet pet1 = new Pet("1", "1", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);;
+        Pet pet1 = new Pet("1", "1", new Location(10.555530, 10.555530), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet1);
-        Pet pet2 = new Pet("2", "2", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet2 = new Pet("2", "2", new Location(10.555510, 10.555510), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet2);
-        Pet pet3 = new Pet("3", "3", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS).setType(PAID_TYPE);
+        Pet pet3 = new Pet("3", "3", new Location(10.555540, 10.555540), OWNER_1, GROUP_RESTAURANTS, PAID_TYPE);
         pets.add(pet3);
-        Pet pet4 = new Pet("4", "4", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet4 = new Pet("4", "4", new Location(10.555520, 10.555520), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet4);
         return pets;
     }
 
     public static List<Pet> getWithinPets() {
         ArrayList<Pet> pets = new ArrayList<Pet>(5);
-        Pet pet0 = new Pet("0", "0", new Location(13, 1), OWNER_1, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet0 = new Pet("0", "0", new Location(13, 1), OWNER_1, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet0);
-        Pet pet1 = new Pet("1", "1", new Location(12, 0.5), OWNER_1, GROUP_HOTELS).setType(PAID_TYPE);;
+        Pet pet1 = new Pet("1", "1", new Location(12, 0.5), OWNER_1, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet1);
-        Pet pet2 = new Pet("2", "2", new Location(11, 0.2), OWNER_2, GROUP_HOTELS).setType(PAID_TYPE);
+        Pet pet2 = new Pet("2", "2", new Location(11, 0.2), OWNER_2, GROUP_HOTELS, PAID_TYPE);
         pets.add(pet2);
-        Pet pet3 = new Pet("3", "3", new Location(9, 0.2), OWNER_1, GROUP_RESTAURANTS).setType(PAID_TYPE);
+        Pet pet3 = new Pet("3", "3", new Location(9, 0.2), OWNER_1, GROUP_RESTAURANTS, PAID_TYPE);
         pets.add(pet3);
-        Pet pet4 = new Pet("4", "4", new Location(11, 2.1), OWNER_2, GROUP_RESTAURANTS).setType(FREE_TYPE);
+        Pet pet4 = new Pet("4", "4", new Location(11, 2.1), OWNER_2, GROUP_RESTAURANTS, FREE_TYPE);
         pets.add(pet4);
         return pets;
     }

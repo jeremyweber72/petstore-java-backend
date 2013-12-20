@@ -15,9 +15,12 @@ import es.zaldo.petstore.core.dao.PetDao;
  */
 public class PetManagerImplTest {
 
+    private static final String ID = "id";
+    private static final Location LOCATION = new Location(1d, 2d);
+    
     @Test
     public void testCreate() throws Exception {
-        Pet pet = new Pet();
+        Pet pet = new Pet(ID, null, LOCATION, null, null, null);
         PetDao mockedDao = Mockito.mock(PetDao.class);
         Mockito.when(mockedDao.upsert(pet)).thenReturn(pet);
 
@@ -29,7 +32,7 @@ public class PetManagerImplTest {
     @Test
     public void testLoadById() throws Exception {
         String id = "any_id";
-        Pet pet = new Pet(id);
+        Pet pet = new Pet(id, null, LOCATION, null, null, null);
         PetDao mockedDao = Mockito.mock(PetDao.class);
         Mockito.when(mockedDao.loadById(id)).thenReturn(pet);
 
@@ -49,7 +52,7 @@ public class PetManagerImplTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Pet pet = new Pet();
+        Pet pet = new Pet(ID, null, LOCATION, null, null, null);
         PetDao mockedDao = Mockito.mock(PetDao.class);
         Mockito.when(mockedDao.upsert(pet)).thenReturn(pet);
 
